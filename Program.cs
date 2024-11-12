@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
 
+
 namespace TodoApi
 {
     public class Program
@@ -8,23 +9,27 @@ namespace TodoApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddDbContext<TodoContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("TodoApiContext")));
+
 
             // Add services to the container.
 
             builder.Services.AddControllers();
-            builder.Services.AddDbContext<TodoContext>(opt =>
-            opt.UseInMemoryDatabase("TodoList"));
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            using (var scope = app.Services.CreateScope())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                var services = scope.ServiceProvider;
             }
+
+            // Configure the HTTP request pipeline.
+
+            app.UseSwagger();
+                app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
 

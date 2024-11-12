@@ -1,4 +1,4 @@
-@TodoApi_HostAddress = http://localhost:5156
+@TodoApi_HostAddress = http://magn82443.web.techcollege.dk/
 
 GET {{TodoApi_HostAddress}}/weatherforecast/
 Accept: application/json
